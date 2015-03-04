@@ -14,26 +14,37 @@ double computePostfix(char *input)
 
     for (int i = 0; input[i] != '\0'; i++)
     {
-        if (input[i] == '+')
-            stack->push(stack->pop() + stack->pop());
-        else if (input[i] == '-')
+        switch (input[i])
         {
-            int sub = stack->pop();
-            int min = stack->pop();
-            stack->push(min - sub);
+            case '+':
+                stack->push(stack->pop() + stack->pop());
+                break;
+
+            case '-':
+            {
+                int sub = stack->pop();
+                int min = stack->pop();
+                stack->push(min - sub);
+            } break;
+
+            case ('*'):
+                stack->push(stack->pop() * stack->pop());
+                break;
+
+            case ('/'):
+            {
+                int down = stack->pop();
+                int up = stack->pop();
+                stack->push(up / down);
+            } break;
+
+            case (' '):
+                continue;
+
+            default:
+                stack->push(convertToNumber(input[i]));
+                break;
         }
-        else if (input[i] == '*')
-            stack->push(stack->pop() * stack->pop());
-        else if (input[i] == '/')
-        {
-            int down = stack->pop();
-            int up = stack->pop();
-            stack->push(up / down);
-        }
-        else if (input[i] == ' ')
-            continue;
-        else
-            stack->push(convertToNumber(input[i]));
     }
 
     int result = stack->pop();
