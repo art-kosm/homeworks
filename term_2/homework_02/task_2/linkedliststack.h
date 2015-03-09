@@ -16,6 +16,5 @@ private:
     StackElement *createStackElement(int value, StackElement *next);
     void removeAfter(StackElement *current);
 
-private:
     StackElement *top;
 };

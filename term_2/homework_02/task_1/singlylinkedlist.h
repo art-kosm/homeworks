@@ -13,6 +13,5 @@ private:
     struct ListElement;
     void removeAfter(ListElement *current);
 
-private:
     ListElement *head;
 };
