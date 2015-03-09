@@ -3,18 +3,31 @@
 #include "transformToPostfix.h"
 #include "computePostfix.h"
 
-char *extend(char *&array, int length, int maxLength)
+Calculator::Calculator()
 {
-    char *newArray = new char[maxLength];
-    for (int i = 0; i < length; i++)
-        newArray[i] = array[i];
-
-    delete [] array;
-
-    return newArray;
+    input = getStringFromStandardInput();
 }
 
-char *getStringFromStandardInput()
+Calculator::~Calculator()
+{
+    delete [] input;
+}
+
+
+void Calculator::calculateExpression() const
+{
+    if (bracketsAreCorrect(input))
+    {
+        char *output = transformToPostfix(input);
+        double result = computePostfix(output);
+        printf("Result is %.f\n", result);
+        delete [] output;
+    }
+    else
+        printf("Your expression has some mistakes.\n");
+}
+
+char *Calculator::getStringFromStandardInput()
 {
     int size = 10;
     int length = 0;
@@ -39,7 +52,18 @@ char *getStringFromStandardInput()
     return string;
 }
 
-bool bracketsAreCorrect(char *string)
+char *Calculator::extend(char *&array, int length, int maxLength)
+{
+    char *newArray = new char[maxLength];
+    for (int i = 0; i < length; i++)
+        newArray[i] = array[i];
+
+    delete [] array;
+
+    return newArray;
+}
+
+bool Calculator::bracketsAreCorrect(char *string) const
 {
     int balance = 0;
 
@@ -54,17 +78,4 @@ bool bracketsAreCorrect(char *string)
     }
 
     return balance == 0;
-}
-
-void calculateExpression(char *input)
-{
-    if (bracketsAreCorrect(input))
-    {
-        char *output = transformToPostfix(input);
-        double result = computePostfix(output);
-        printf("Result is %.f\n", result);
-        delete [] output;
-    }
-    else
-        printf("Your expression has some mistakes.\n");
 }

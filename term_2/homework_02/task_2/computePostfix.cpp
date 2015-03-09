@@ -27,18 +27,18 @@ double computePostfix(char *input)
                 stack->push(min - sub);
             } break;
 
-            case ('*'):
+            case '*':
                 stack->push(stack->pop() * stack->pop());
                 break;
 
-            case ('/'):
+            case '/':
             {
                 int down = stack->pop();
                 int up = stack->pop();
                 stack->push(up / down);
             } break;
 
-            case (' '):
+            case ' ':
                 continue;
 
             default:

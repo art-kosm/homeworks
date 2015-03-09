@@ -4,8 +4,9 @@
 #include "recursivestack.h"
 #include "calculator.h"
 
-int main()
+void linkedListStackTest()
 {
+    printf("Linked list stack:\n");
     Stack *list = new LinkedListStack();
     list->push('a');
     list->push('b');
@@ -16,7 +17,11 @@ int main()
     printf("Empty? %s", list->isEmpty() ? "true\n" : "false\n");
 
     delete list;
+}
 
+void recursiveStackTest()
+{
+    printf("\nRecursive stack:\n");
     Stack *stack = new RecursiveStack();
     stack->push('a');
     stack->push('b');
@@ -28,12 +33,23 @@ int main()
     printf("Empty? %s", stack->isEmpty() ? "true\n" : "false\n");
 
     delete stack;
+}
 
+void useCalculator()
+{
     printf("\nEnter an expression: ");
-    char *expression = getStringFromStandardInput();
-    calculateExpression(expression);
+    Calculator *calculator = new Calculator();
+    calculator->calculateExpression();
 
-    delete [] expression;
+    delete calculator;
+}
+
+int main()
+{
+    linkedListStackTest();
+    recursiveStackTest();
+
+    useCalculator();
 
     return 0;
 }
