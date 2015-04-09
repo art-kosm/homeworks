@@ -1,11 +1,11 @@
-#include "quicksortsorter.h"
+#include "quicksortSorter.h"
 
-void QuicksortSorter::sort(dataType *array, int size)
+void QuicksortSorter::sort(int *array, int size)
 {
     sort(array, 0, size - 1);
 }
 
-void QuicksortSorter::sort(dataType *array, int left, int right)
+void QuicksortSorter::sort(int *array, int left, int right)
 {
     if (left < right)
     {

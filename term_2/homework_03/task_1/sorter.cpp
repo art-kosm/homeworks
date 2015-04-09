@@ -1,8 +1,8 @@
 #include "sorter.h"
 
-void Sorter::swap(dataType &first, dataType &second)
+void Sorter::swap(int &first, int &second)
 {
-    dataType memory = first;
+    int memory = first;
     first = second;
     second = memory;
 }

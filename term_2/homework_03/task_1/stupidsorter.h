@@ -4,7 +4,15 @@
 class StupidSorter : public Sorter
 {
 public:
-    StupidSorter() {}
-    ~StupidSorter() {}
-    void sort(dataType *array, int size);
+
+    /**
+     * @brief Stupid sort
+     *
+     * An uneffective sorting algorithm
+     *
+     * @param array Target array
+     * @param size Size of the array
+     */
+
+    void sort(int *array, int size);
 };

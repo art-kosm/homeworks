@@ -1,6 +1,6 @@
-#include "stupidsorter.h"
+#include "stupidSorter.h"
 
-void StupidSorter::sort(dataType *array, int size)
+void StupidSorter::sort(int *array, int size)
 {
     int currentElement = 0;
 

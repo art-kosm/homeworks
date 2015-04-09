@@ -4,7 +4,15 @@
 class HeapsortSorter : public Sorter
 {
 public:
-    HeapsortSorter() {}
-    ~HeapsortSorter() {}
-    void sort(dataType *array, int size);
+
+    /**
+     * @brief Heapsort
+     *
+     * An effective sorting algorithm
+     *
+     * @param array Target array
+     * @param size Size of the array
+     */
+
+    void sort(int *array, int size);
 };

@@ -1,22 +1,28 @@
+QT       += testlib
+QT       -= gui
+
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
 SOURCES += main.cpp \
-    quicksortsorter.cpp \
-    heapsortsorter.cpp \
-    stupidsorter.cpp \
-    bogosortsorter.cpp \
-    sorter.cpp
+    sorter.cpp \
+    bogosortSorter.cpp \
+    heapsortSorter.cpp \
+    quicksortSorter.cpp \
+    stupidSorter.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
     sorter.h \
-    quicksortsorter.h \
-    heapsortsorter.h \
-    stupidsorter.h \
-    bogosortsorter.h
+    bogosortSorter.h \
+    bogosortSorterTest.h \
+    heapsortSorter.h \
+    quicksortSorter.h \
+    stupidSorter.h \
+    quicksortSorterTest.h \
+    heapsortSorterTest.h \
+    stupidSorterTest.h
 

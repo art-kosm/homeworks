@@ -1,6 +1,6 @@
-#include "heapsortsorter.h"
+#include "heapsortSorter.h"
 
-void HeapsortSorter::sort(dataType *array, int size)
+void HeapsortSorter::sort(int *array, int size)
 {
     if (size > 1)
     {
