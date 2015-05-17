@@ -1,18 +1,22 @@
+QT       += testlib
+QT       -= gui
+
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
 SOURCES += main.cpp \
-    consoleprinter.cpp \
-    fileprinter.cpp
+    filePrinter.cpp \
+    consolePrinter.cpp \
+    arrayPrinter.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    arrayprinter.h \
-    consoleprinter.h \
-    fileprinter.h
+    arrayPrinter.h \
+    consolePrinter.h \
+    filePrinter.h \
+    filePrinterTest.h
 
 QMAKE_CXXFLAGS += -std=c++11

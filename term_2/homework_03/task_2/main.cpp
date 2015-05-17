@@ -1,15 +1,17 @@
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
-#include "arrayprinter.h"
-#include "consoleprinter.h"
-#include "fileprinter.h"
+#include "arrayPrinter.h"
+#include "consolePrinter.h"
+#include "filePrinter.h"
+#include "filePrinterTest.h"
 
 /**
  * @brief The Mode enum
  *
- * Defines the action to be done with the array
+ * Defines the action to be done with array
  */
+
 enum Mode
 {
     printToConsole,
@@ -18,23 +20,24 @@ enum Mode
 };
 
 /**
- * @brief User-defined array size getter
+ * @brief An odd positive integer demander
  *
  * @return An integer, which will be used as size
  */
-int getSize()
+
+int demandOddPositiveInteger()
 {
-    int size = 0;
-    while (size % 2 == 0 || size < 0)
+    int result = 0;
+    while (result % 2 == 0 || result < 0)
     {
         printf("Enter N! ");
-        scanf("%d", &size);
-        if (size % 2 == 0)
+        scanf("%d", &result);
+        if (result % 2 == 0)
             printf("N is not odd. \n");
-        if (size < 0)
+        if (result < 0)
             printf("N is negative. \n");
     }
-    return size;
+    return result;
 }
 
 /**
@@ -43,6 +46,7 @@ int getSize()
  * @param size An integer got from getSize()
  * @return A 2-dimensional array with random 1-digit integers
  */
+
 int **initializeArray(int size)
 {
     int **array = new int*[size];
@@ -64,11 +68,12 @@ int **initializeArray(int size)
 }
 
 /**
- * @brief User-defined processing mode getter
+ * @brief Processing mode demander
  *
  * @return The mode in which array will be printed
  */
-Mode getMode()
+
+Mode demandMode()
 {
     Mode mode = undefined;
 
@@ -99,6 +104,7 @@ Mode getMode()
  * @param array Array to be printed
  * @param size Size of the array
  */
+
 void printArrayInSpecifiedMode(Mode mode, int **array, int size)
 {
     switch (mode)
@@ -124,20 +130,36 @@ void printArrayInSpecifiedMode(Mode mode, int **array, int size)
     }
 }
 
-int main()
+/**
+ * @brief User activity processer
+ *
+ * Demands the array size and the mode and prints the array in the specified mode
+ */
+
+void processUserActivity()
 {
     srand(time(0));
 
-    int size = getSize();
+    int size = demandOddPositiveInteger();
     int **array = initializeArray(size);
 
-    Mode mode = getMode();
+    Mode mode = demandMode();
 
     printArrayInSpecifiedMode(mode, array, size);
 
     for(int i = 0; i < size; i++)
         delete [] array[i];
     delete [] array;
+}
+
+int main()
+{
+    FilePrinterTest testPrinter;
+    QTest::qExec(&testPrinter);
+
+    printf("\n");
+
+    processUserActivity();
 
     return 0;
 }

@@ -1,13 +1,16 @@
 #pragma once
-#include "arrayprinter.h"
+#include "arrayPrinter.h"
 
 class ConsolePrinter : public ArrayPrinter
 {
 public:
-    ConsolePrinter() {}
-    ~ConsolePrinter() {}
-    void printArray(int **array, int size);
 
-private:
-    void printElement(int **array, int line, int column, int currentElement) const;
+    /**
+     * @brief Console-tageted array printer
+     *
+     * @param array Target array
+     * @param size Size of the array
+     */
+
+    void printArraySpecified(int *array, int size, char *path = nullptr);
 };

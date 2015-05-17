@@ -1,82 +1,29 @@
 #include <cstdio>
 #include <fstream>
-#include "fileprinter.h"
+#include "filePrinter.h"
 
-/**
- * @brief File-tageted array printer
- *
- * Asks user the file path and exports an array to this file
- * If file is not found, it will be created
- *
- * @param array Target array
- * @param size Size of the array
- */
-void FilePrinter::printArray(int **array, int size)
+void FilePrinter::printArraySpecified(int *array, int size, char *path)
 {
-    printf("Enter the file path: ");
-    char *path = getStringFromStandardInput();
-    std::ofstream out(path);
-    delete [] path;
+    bool userPath = false;
 
-    int line = size / 2;
-    int column = line;
-    int currentElement = 1;
-
-    out << "element " << currentElement << ": " << array[line][column];
-    currentElement++;
-
-    if (size > 1)
+    if (path == nullptr)
     {
-        line++;
-        out << "\nelement " << currentElement << ": " << array[line][column];
-        currentElement++;
-        column++;
-        out << "\nelement " << currentElement << ": " << array[line][column];
-        currentElement++;
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (i < 2)
-                line--;
-            else
-                column--;
-            out << "\nelement " << currentElement << ": " << array[line][column];
-            currentElement++;
-        }
-
-        for (int i = 3; i < size; i += 2)
-        {
-            for (int j = 0; j < 4 * i + 2; j++)
-            {
-                if (j < i)
-                    line++;
-                else if (j < 2 * i)
-                    column++;
-                else if (j < 3 * i + 1)
-                    line--;
-                else
-                    column--;
-                out << "\nelement " << currentElement << ": " << array[line][column];
-                currentElement++;
-            }
-        }
-
-        for (int i = 0; i < size - 1; i++)
-        {
-            line++;
-            out << "\nelement " << currentElement << ": " << array[line][column];
-            currentElement++;
-        }
+        printf("Enter the file path: ");
+        path = getStringFromStandardInput();
+        userPath = true;
     }
+
+    std::ofstream out(path);
+
+    if (userPath)
+        delete [] path;
+
+    for (int i = 0; i < size; i++)
+        out << "element " << i + 1 << ": " << array[i] << "\n";
 
     out.close();
 }
 
-/**
- * @brief User-defined string getter
- *
- * @return A char array with got string
- */
 char *FilePrinter::getStringFromStandardInput()
 {
     int size = 10;
@@ -102,14 +49,6 @@ char *FilePrinter::getStringFromStandardInput()
     return string;
 }
 
-/**
- * @brief Char array extender
- *
- * @param array
- * @param length Initial array length
- * @param maxLength Target length
- * @return Extended array
- */
 char *FilePrinter::extend(char *&array, int length, int maxLength)
 {
     char *newArray = new char[maxLength];
