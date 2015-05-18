@@ -1,6 +1,6 @@
 #include "computePostfix.h"
 #include "stack.h"
-#include "linkedliststack.h"
+#include "linkedListStack.h"
 
 double convertToNumber(char character)
 {

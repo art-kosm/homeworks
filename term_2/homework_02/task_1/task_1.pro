@@ -1,18 +1,20 @@
+QT       += testlib
+QT       -= gui
+
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
-SOURCES += main.cpp \
-    doublylinkedlist.cpp \
-    singlylinkedlist.cpp
-
-include(deployment.pri)
-qtcAddDeployment()
+SOURCES += \
+    main.cpp \
+    doublyLinkedList.cpp \
+    singlyLinkedList.cpp
 
 HEADERS += \
-    doublylinkedlist.h \
-    singlylinkedlist.h \
-    linkedlist.h
+    doublyLinkedList.h \
+    doublyLinkedListTest.h \
+    linkedList.h \
+    singlyLinkedList.h \
+    singlyLinkedListTest.h
 
 QMAKE_CXXFLAGS += -std=c++11

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "linkedList.h"
+
 class DoublyLinkedList : public LinkedList
 {
 public:
@@ -7,11 +9,14 @@ public:
     ~DoublyLinkedList();
     void insert(int value);
     void remove(int value);
-    void print();
+    bool isEmpty() const;
+    int getLength() const;
+    bool contains(int value) const;
+    void print() const;
 
 private:
     struct ListElement;
-    void removeAfter(ListElement *current);
+    ListElement *head;
 
-    ListElement *head;    
+    void removeAfter(ListElement *current);
 };

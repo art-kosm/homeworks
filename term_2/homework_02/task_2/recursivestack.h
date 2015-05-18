@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stack.h"
+
 class RecursiveStack : public Stack
 {
 public:
@@ -7,9 +9,9 @@ public:
     ~RecursiveStack();
     void push(int value);
     char pop();
-    char peek();
-    void print();
-    bool isEmpty();
+    char peek() const;
+    void print() const;
+    bool isEmpty() const;
 
 private:
     char value;

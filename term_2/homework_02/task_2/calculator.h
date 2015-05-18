@@ -4,8 +4,9 @@ class Calculator
 {
 public:
     Calculator();
+    Calculator(char *expression);
     ~Calculator();
-    void calculateExpression() const;
+    int calculateExpression() const;
 
 private:
     char *getStringFromStandardInput();

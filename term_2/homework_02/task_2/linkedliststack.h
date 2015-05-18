@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stack.h"
+
 class LinkedListStack : public Stack
 {
 public:
@@ -7,14 +9,14 @@ public:
     ~LinkedListStack();
     void push(int value);
     char pop();
-    char peek();
-    void print();
-    bool isEmpty();
+    char peek() const;
+    void print() const;
+    bool isEmpty() const;
 
 private:
     struct StackElement;
+    StackElement *top;
+
     StackElement *createStackElement(int value, StackElement *next);
     void removeAfter(StackElement *current);
-
-    StackElement *top;
 };

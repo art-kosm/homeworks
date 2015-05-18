@@ -1,6 +1,6 @@
 #include "transformToPostfix.h"
 #include "stack.h"
-#include "linkedliststack.h"
+#include "linkedListStack.h"
 
 void addToString(char *string, int position, char value)
 {
@@ -17,6 +17,7 @@ int getPriority(char token)
 {
     if (token == '+' || token == '-')
         return 0;
+
     return 1;
 }
 

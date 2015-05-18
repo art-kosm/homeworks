@@ -1,6 +1,6 @@
 #include <cstdio>
-#include "linkedlist.h"
-#include "doublylinkedlist.h"
+#include "linkedList.h"
+#include "doublyLinkedList.h"
 
 struct DoublyLinkedList::ListElement
 {
@@ -26,6 +26,8 @@ DoublyLinkedList::~DoublyLinkedList()
 
     while (current->next != nullptr)
         removeAfter(current);
+
+    delete head;
 }
 
 void DoublyLinkedList::insert(int value)
@@ -60,7 +62,31 @@ void DoublyLinkedList::remove(int value)
         removeAfter(current);
 }
 
-void DoublyLinkedList::print()
+bool DoublyLinkedList::isEmpty() const
+{
+    return head->next == nullptr;
+}
+
+int DoublyLinkedList::getLength() const
+{
+    int length = 0;
+
+    for (ListElement *current = head->next; current!= nullptr; current = current->next)
+        length++;
+
+    return length;
+}
+
+bool DoublyLinkedList::contains(int value) const
+{
+    for (ListElement *current = head->next; current!= nullptr; current = current->next)
+        if (current->value == value)
+            return true;
+
+    return false;
+}
+
+void DoublyLinkedList::print() const
 {
     ListElement *current = head->next;
 

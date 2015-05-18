@@ -1,6 +1,6 @@
 #include <cstdio>
 #include "stack.h"
-#include "recursivestack.h"
+#include "recursiveStack.h"
 
 RecursiveStack::RecursiveStack()
 {
@@ -20,6 +20,7 @@ void RecursiveStack::push(int value)
     newStack->value = this->value;
     newStack->stack = stack;
     this->value = value;
+
     stack = newStack;
 }
 
@@ -40,13 +41,12 @@ char RecursiveStack::pop()
     return result;
 }
 
-char RecursiveStack::peek()
+char RecursiveStack::peek() const
 {
-
     return value;
 }
 
-void RecursiveStack::print()
+void RecursiveStack::print() const
 {
     if (!isEmpty())
     {
@@ -55,7 +55,7 @@ void RecursiveStack::print()
     }
 }
 
-bool RecursiveStack::isEmpty()
+bool RecursiveStack::isEmpty() const
 {
     return stack == nullptr;
 }
