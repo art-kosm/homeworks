@@ -1,11 +1,17 @@
 #pragma once
-#include "linkedlist.h"
+#include "linkedList.h"
 
 class ListsComparator
 {
 public:
-    virtual ~ListsComparator() {}
 
-protected:
+    /**
+     * @brief Lists comparator itself, the function, deciding whether the first list is longer than the second one
+     *
+     * @param first
+     * @param second
+     * @return Result of comparison
+     */
+
     static bool isGreaterThan(LinkedList *first, LinkedList *second);
 };

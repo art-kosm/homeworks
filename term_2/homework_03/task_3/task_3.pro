@@ -1,19 +1,20 @@
-TEMPLATE = app
+QT       += testlib
+QT       -= gui
+
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
 SOURCES += main.cpp \
-    listscomparator.cpp \
-    linkedlist.cpp \
-    sortedset.cpp
-
-include(deployment.pri)
-qtcAddDeployment()
+    linkedList.cpp \
+    listsComparator.cpp \
+    sortedSet.cpp
 
 HEADERS += \
-    listscomparator.h \
-    linkedlist.h \
-    sortedset.h
+    linkedList.h \
+    listsComparator.h \
+    sortedSet.h \
+    listsComparatorTest.h \
+    linkedListTest.h \
+    sortedSetTest.h
 
 QMAKE_CXXFLAGS += -std=c++11
