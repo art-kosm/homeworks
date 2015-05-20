@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <fstream>
 #include <QObject>
 #include <QtTest/QtTest>
@@ -36,7 +37,18 @@ private slots:
         size = 1;
         int values[size] = {-10};
         array = initializeArray(size, values);
-        char path[] = "c:\\users\\kofochka\\desktop\\file.txt";
+
+        std::cout << "Enter any correct path: ";
+        char *string = getStringFromStandardInput();
+        int length = 1;
+        for (int i = 0; string[i] != '\0'; i++)
+            length++;
+
+        char path[length];
+        for (int i = 0; i < length; i++)
+            path[i] = string[i];
+
+        delete [] string;
 
         printer->printArray(array, size, path);
 
@@ -50,7 +62,18 @@ private slots:
         size = 3;
         int values[size * size] = {-3, 14, 15, 92, 6, -535, 8, 9, 79};
         array = initializeArray(size, values);
-        char path[] = "c:\\users\\kofochka\\desktop\\file.txt";
+
+        std::cout << "Enter any correct path: ";
+        char *string = getStringFromStandardInput();
+        int length = 1;
+        for (int i = 0; string[i] != '\0'; i++)
+            length++;
+
+        char path[length];
+        for (int i = 0; i < length; i++)
+            path[i] = string[i];
+
+        delete [] string;
 
         printer->printArray(array, size, path);
 
@@ -72,6 +95,42 @@ private:
     int size;
     int **array;
     char **fileText;
+
+    char *getStringFromStandardInput()
+    {
+        int size = 10;
+        int length = 0;
+        char *string = new char[size];
+
+        while (true)
+        {
+            scanf("%c", &string[length]);
+            length++;
+            if (string[length - 1] == '\n')
+            {
+                string[length - 1] = '\0';
+                break;
+            }
+            if (length == size)
+            {
+                size = size * 3 / 2 + 1;
+                string = extend(string, length, size);
+            }
+        }
+
+        return string;
+    }
+
+    char *extend(char *&array, int length, int maxLength)
+    {
+        char *newArray = new char[maxLength];
+        for (int i = 0; i < length; i++)
+            newArray[i] = array[i];
+
+        delete [] array;
+
+        return newArray;
+    }
 
     int **initializeArray(int size, int *values)
     {
