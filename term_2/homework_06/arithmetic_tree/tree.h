@@ -11,7 +11,17 @@ public:
     void setOperation(Operator *operation);
     void setLeftOperand(Operand *operand);
     void setRightOperand(Operand *operand);
+
+    ///Functions inherited from the base class
+
     int calculate() const;
+
+    /**
+     * @brief The tree printer
+     *
+     * Format is "(<operation> <left operand> <right operand>)"
+     */
+
     void print() const;
 
 private:

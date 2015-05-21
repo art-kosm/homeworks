@@ -12,9 +12,9 @@ Calculator::~Calculator()
     delete tree;
 }
 
-void Calculator::makeTreeFromFile(char *path)
+void Calculator::buildTreeFromFile(char *path)
 {
-    TreeBuilder *builder = new TreeBuilder();
+    TreeBuilder *builder = new TreeBuilder;
     tree = builder->buildTree(path);
 
     delete builder;

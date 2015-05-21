@@ -1,7 +1,10 @@
 #include <iostream>
 #include "calculator.h"
-
-using namespace std;
+#include "operatorTest.h"
+#include "numberTest.h"
+#include "operandTest.h"
+#include "treeTest.h"
+#include "treeBuilderTest.h"
 
 char *extend(char *&array, int length, int maxLength)
 {
@@ -39,13 +42,36 @@ char *getStringFromStandardInput()
     return string;
 }
 
-int main()
+void runTests()
 {
-    cout << "Enter the file path: ";
+    OperatorTest testOperator;
+    QTest::qExec(&testOperator);
+    std::cout << std::endl;
+
+    NumberTest testNumber;
+    QTest::qExec(&testNumber);
+    std::cout << std::endl;
+
+    OperandTest testOperand;
+    QTest::qExec(&testOperand);
+    std::cout << std::endl;
+
+    TreeTest testTree;
+    QTest::qExec(&testTree);
+    std::cout << std::endl;
+
+    TreeBuilderTest testBuilder;
+    QTest::qExec(&testBuilder);
+    std::cout << std::endl;
+}
+
+void processTree()
+{
+    std::cout << "Enter the file path: ";
     char *path = getStringFromStandardInput();
 
     Calculator *calculator = new Calculator();
-    calculator->makeTreeFromFile(path);
+    calculator->buildTreeFromFile(path);
 
     delete path;
 
@@ -56,6 +82,12 @@ int main()
     std::cout << std::endl;
 
     delete calculator;
+}
+
+int main()
+{
+    runTests();
+    processTree();
 
     return 0;
 }

@@ -20,7 +20,7 @@ Tree *TreeBuilder::buildTree(char *path)
 
 Tree *TreeBuilder::readTree(std::ifstream &in, char operation)
 {
-    Tree *tree = new Tree();
+    Tree *tree = new Tree;
 
     setOperator(tree, operation);
     setOperands(tree, in);
@@ -33,19 +33,19 @@ void TreeBuilder::setOperator(Tree *tree, char operation)
     switch (operation)
     {
         case '+':
-            tree->setOperation(new OperatorAdd());
+            tree->setOperation(new OperatorAdd);
             break;
 
         case '-':
-            tree->setOperation(new OperatorSub());
+            tree->setOperation(new OperatorSub);
             break;
 
         case '*':
-            tree->setOperation(new OperatorMul());
+            tree->setOperation(new OperatorMul);
             break;
 
         case '/':
-            tree->setOperation(new OperatorDiv());
+            tree->setOperation(new OperatorDiv);
             break;
 
         default:

@@ -1,7 +1,9 @@
+QT       += testlib
+QT       -= gui
+
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
 SOURCES += main.cpp \
     tree.cpp \
@@ -24,6 +26,11 @@ HEADERS += \
     operatorMul.h \
     operatorSub.h \
     calculator.h \
-    treeBuilder.h
+    treeBuilder.h \
+    operatorTest.h \
+    numberTest.h \
+    operandTest.h \
+    treeTest.h \
+    treeBuilderTest.h
 
 QMAKE_CXXFLAGS += -std=c++11
