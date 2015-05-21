@@ -10,9 +10,6 @@ SOURCES += main.cpp \
     consolePrinter.cpp \
     arrayPrinter.cpp
 
-include(deployment.pri)
-qtcAddDeployment()
-
 HEADERS += \
     arrayPrinter.h \
     consolePrinter.h \

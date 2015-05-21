@@ -38,20 +38,10 @@ private slots:
         int values[size] = {-10};
         array = initializeArray(size, values);
 
-        std::cout << "Enter any correct path: ";
-        char *string = getStringFromStandardInput();
-        int length = 1;
-        for (int i = 0; string[i] != '\0'; i++)
-            length++;
-
-        char path[length];
-        for (int i = 0; i < length; i++)
-            path[i] = string[i];
-
-        delete [] string;
+        std::cout << "Enter any valid file path: ";
+        path = getStringFromStandardInput();
 
         printer->printArray(array, size, path);
-
         fileText = getTextFromInputFile(path);
 
         QVERIFY(QString(fileText[0]) == "element 1: -10");
@@ -63,21 +53,10 @@ private slots:
         int values[size * size] = {-3, 14, 15, 92, 6, -535, 8, 9, 79};
         array = initializeArray(size, values);
 
-        std::cout << "Enter any correct path: ";
-        char *string = getStringFromStandardInput();
-        int length = 1;
-        for (int i = 0; string[i] != '\0'; i++)
-            length++;
-
-        char path[length];
-        for (int i = 0; i < length; i++)
-            path[i] = string[i];
-
-        delete [] string;
-
         printer->printArray(array, size, path);
-
         fileText = getTextFromInputFile(path);
+
+        delete path;
 
         QVERIFY(QString(fileText[0]) == "element 1: 6" &&
                 QString(fileText[1]) == "element 2: 9" &&
@@ -93,6 +72,7 @@ private slots:
 private:
     FilePrinter *printer;
     int size;
+    char *path;
     int **array;
     char **fileText;
 
