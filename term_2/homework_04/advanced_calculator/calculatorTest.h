@@ -43,7 +43,7 @@ private slots:
         calculator->setNextOperand("-125.47");
         double result = calculator->getResult();
 
-        QVERIFY(result == -125.47);
+        QCOMPARE(result, -125.47);
     }
 
     void testIntegerAddition()
@@ -83,7 +83,7 @@ private slots:
         calculator->setNextOperand("27");
         double result = calculator->getResult();
 
-        QVERIFY(result == (double) -29 / 27);
+        QCOMPARE(result, (double) -29 / 27);
     }
 
     void testNonIntegerAddition()
@@ -93,7 +93,7 @@ private slots:
         calculator->setNextOperand("6.9");
         double result = calculator->getResult();
 
-        QVERIFY(result == 1.0);
+        QCOMPARE(result, 1.0);
     }
 
     void testNonIntegerSubtraction()
@@ -103,7 +103,7 @@ private slots:
         calculator->setNextOperand("-0.9");
         double result = calculator->getResult();
 
-        QVERIFY(result == 29.991);
+        QCOMPARE(result, 29.991);
     }
 
     void testNonIntegerMultiplication()
@@ -123,7 +123,7 @@ private slots:
         calculator->setNextOperand("11.2");
         double result = calculator->getResult();
 
-        QVERIFY(result == -9.11 / 11.2);
+        QCOMPARE(result, -9.11 / 11.2);
     }
 
     void testComplexExpression()
@@ -139,7 +139,7 @@ private slots:
         calculator->setNextOperand("2");
         double result = calculator->getResult();
 
-        QVERIFY(result == 2.0);
+        QCOMPARE(result, 2.0);
     }
 
 private:
