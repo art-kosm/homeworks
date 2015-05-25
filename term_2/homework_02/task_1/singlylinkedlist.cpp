@@ -1,6 +1,5 @@
 #include <cstdio>
-#include "linkedlist.h"
-#include "singlylinkedlist.h"
+#include "singlyLinkedList.h"
 
 struct SinglyLinkedList::ListElement
 {
@@ -24,6 +23,8 @@ SinglyLinkedList::~SinglyLinkedList()
 
     while (current->next != nullptr)
         removeAfter(current);
+
+    delete head;
 }
 
 void SinglyLinkedList::insert(int value)
@@ -55,7 +56,31 @@ void SinglyLinkedList::remove(int value)
         removeAfter(current);
 }
 
-void SinglyLinkedList::print()
+bool SinglyLinkedList::isEmpty() const
+{
+    return head->next == nullptr;
+}
+
+int SinglyLinkedList::getLength() const
+{
+    int length = 0;
+
+    for (ListElement *current = head->next; current!= nullptr; current = current->next)
+        length++;
+
+    return length;
+}
+
+bool SinglyLinkedList::contains(int value) const
+{
+    for (ListElement *current = head->next; current!= nullptr; current = current->next)
+        if (current->value == value)
+            return true;
+
+    return false;
+}
+
+void SinglyLinkedList::print() const
 {
     ListElement *current = head->next;
 

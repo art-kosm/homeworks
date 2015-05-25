@@ -8,23 +8,28 @@ Calculator::Calculator()
     input = getStringFromStandardInput();
 }
 
+Calculator::Calculator(char *expression)
+{
+    input = expression;
+}
+
 Calculator::~Calculator()
 {
     delete [] input;
 }
 
-
-void Calculator::calculateExpression() const
+int Calculator::calculateExpression() const
 {
+    double result = 0;
+
     if (bracketsAreCorrect(input))
     {
         char *output = transformToPostfix(input);
-        double result = computePostfix(output);
-        printf("Result is %.f\n", result);
+        result = computePostfix(output);
         delete [] output;
     }
-    else
-        printf("Your expression has some mistakes.\n");
+
+    return result;
 }
 
 char *Calculator::getStringFromStandardInput()

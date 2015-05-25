@@ -1,6 +1,6 @@
 #include <cstdio>
 #include "stack.h"
-#include "linkedliststack.h"
+#include "linkedListStack.h"
 
 struct LinkedListStack::StackElement
 {
@@ -50,7 +50,7 @@ char LinkedListStack::pop()
     return '\0';
 }
 
-char LinkedListStack::peek()
+char LinkedListStack::peek() const
 {
     if (!isEmpty())
         return top->next->value;
@@ -58,7 +58,7 @@ char LinkedListStack::peek()
     return '\0';
 }
 
-void LinkedListStack::print()
+void LinkedListStack::print() const
 {
     StackElement *current = top->next;
 
@@ -69,7 +69,7 @@ void LinkedListStack::print()
     }
 }
 
-bool LinkedListStack::isEmpty()
+bool LinkedListStack::isEmpty() const
 {
     return top->next == nullptr;
 }
