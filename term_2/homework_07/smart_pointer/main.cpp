@@ -11,7 +11,6 @@ void createNewFunctionPointer(NumberClass *object)
 
 int main()
 {
-
     SharedPointer<NumberClass> firstObjectPointer1(new NumberClass(7));
     std::cout << "First object count: " << firstObjectPointer1.count() << std::endl;
 
@@ -19,9 +18,22 @@ int main()
     std::cout << "First object count: " << firstObjectPointer1.count() << std::endl;
 
     SharedPointer<NumberClass> firstObjectPointer3 = firstObjectPointer2;
-    std::cout << "First object count: " << firstObjectPointer1.count() << std::endl;
+    std::cout << "First object count: " << firstObjectPointer1.count() << std::endl << std::endl;
 
     SharedPointer<NumberClass> secondObjectPointer(new NumberClass(-7));
+    std::cout << "Second object count: " << secondObjectPointer.count() << std::endl << std::endl;
+
+    NumberClass *thirdObject = new NumberClass(35);
+    SharedPointer<NumberClass> thirdObjectPointer1(thirdObject);
+    SharedPointer<NumberClass> thirdObjectPointer2(thirdObject);
+    SharedPointer<NumberClass> thirdObjectPointer3(thirdObject);
+
+    std::cout << "Third object count: " << thirdObjectPointer1.count() << std::endl;
+    std::cout << "Third object value: " << thirdObjectPointer2->getValue() << std::endl << std::endl;
+
+    delete thirdObject;
+    std::cout << "Third object count: " << thirdObjectPointer2.count() << std::endl;
+    std::cout << "Third object value: " << thirdObjectPointer3->getValue() << std::endl << std::endl;
 
     std::cout << "firstObjectPointer1 object value: " << firstObjectPointer1->getValue() << std::endl;
     std::cout << "firstObjectPointer2 object value: " << firstObjectPointer2->getValue() << std::endl;

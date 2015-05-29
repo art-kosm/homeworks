@@ -113,7 +113,7 @@ private:
     struct ListElement
     {
         T *value;
-        int count;
+        int count; ///number of pointers to the object
         ListElement *next;
     };
 

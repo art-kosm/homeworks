@@ -8,10 +8,27 @@ class SharedPointer
 public:
     SharedPointer() {}
 
+    /**
+     * @brief SharedPointer pointer construtor
+     *
+     * Adds the object to objectsList if it is not presented,
+     * increments its pointer count otherwise
+     *
+     * @param newObject
+     */
+
     SharedPointer(T *newObject) : object(newObject)
     {
         objectsList->add(object);
     }
+
+    /**
+     * @brief SharedPointer copy constructor
+     *
+     * Increments the object count
+     *
+     * @param pointer
+     */
 
     SharedPointer(const SharedPointer &pointer) : object(&*pointer)
     {
@@ -28,7 +45,10 @@ public:
 
     SharedPointer& operator=(const SharedPointer &pointer)
     {
-        return new SharedPointer(&*pointer);
+        delete this;
+        this = new SharedPointer(&*pointer);
+
+        return *this;
     }
 
     T* operator->() const
@@ -40,6 +60,12 @@ public:
     {
         return *object;
     }
+
+    /**
+     * @brief Object pointer count getter
+     *
+     * @return the object pointer count
+     */
 
     int count() const
     {
