@@ -4,7 +4,8 @@ CONFIG += console
 CONFIG -= app_bundle
 
 SOURCES += main.cpp \
-    uniqueList.cpp
+    uniqueList.cpp \
+    linkedList.cpp
 
 HEADERS += \
     uniqueList.h \
@@ -12,6 +13,7 @@ HEADERS += \
     valueAlreadyExistsException.h \
     valueNotFoundException.h \
     valueNotFoundExceptionTest.h \
-    valueAlreadyExistsExceptionTest.h
+    valueAlreadyExistsExceptionTest.h \
+    linkedList.h
 
 QMAKE_CXXFLAGS += --std=c++11
