@@ -1,6 +1,9 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include "hashFunctionTab.h"
+#include "hashSimple.h"
+#include "hashRS.h"
+#include "hashLY.h"
 
 HashFunctionTab::HashFunctionTab(Hashtable *hashtable, QWidget *parent) : QWidget(parent)
 {
@@ -25,72 +28,21 @@ HashFunctionTab::HashFunctionTab(Hashtable *hashtable, QWidget *parent) : QWidge
 
 void HashFunctionTab::hashSimpleToggled()
 {
-    hashtable->setHashFunction(&hashSimple);
+    hashtable->setHashFunction(new HashSimple());
 
     emit hashFunctionSet();
 }
 
 void HashFunctionTab::hashRSToggled()
 {
-    hashtable->setHashFunction(&hashRS);
+    hashtable->setHashFunction(new HashRS());
 
     emit hashFunctionSet();
 }
 
 void HashFunctionTab::hashLYToggled()
 {
-    hashtable->setHashFunction(&hashLY);
+    hashtable->setHashFunction(new HashLY());
 
     emit hashFunctionSet();
-}
-
-unsigned int HashFunctionTab::hashSimple(const QString &value, int modulo)
-{
-    const unsigned int base = 8191 % modulo; //prime
-
-    int last = value.length() - 1;
-    unsigned int sum = value.at(last).toLatin1() % modulo;
-
-    while (last > 0)
-    {
-        last--;
-        sum = (base * sum + value.at(last).toLatin1()) % modulo;
-    }
-
-    return sum;
-}
-
-unsigned int HashFunctionTab::hashRS(const QString &value, int modulo)
-{
-    unsigned int base = 63689 % modulo; //prime
-    const unsigned int multiplier = 378551 % modulo; //prime
-
-    int last = value.length() - 1;
-    unsigned int sum = value.at(last).toLatin1() % modulo;
-
-    while (last > 0)
-    {
-        last--;
-        sum = (base * sum + value.at(last).toLatin1()) % modulo;
-        base *= multiplier % modulo;
-    }
-
-    return sum;
-}
-
-unsigned int HashFunctionTab::hashLY(const QString &value, int modulo)
-{
-    const unsigned int base = 1664525 % modulo; //not prime . . .
-    const unsigned int summand = 1013904223 % modulo; //prime
-
-    int last = value.length() - 1;
-    unsigned int sum = value.at(last).toLatin1() % modulo;
-
-    while (last > 0)
-    {
-        last--;
-        sum = (base * sum + value.at(last).toLatin1() + summand) % modulo;
-    }
-
-    return sum;
 }

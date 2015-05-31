@@ -2,9 +2,7 @@ QT       += testlib gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = hashtable
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
     hashtable.cpp \
@@ -12,7 +10,10 @@ SOURCES += main.cpp\
     generalTab.cpp \
     hashFunctionTab.cpp \
     mainWindow.cpp \
-    statisticsTab.cpp
+    statisticsTab.cpp \
+    hashSimple.cpp \
+    hashRS.cpp \
+    hashLY.cpp
 
 HEADERS  += \
     hashtable.h \
@@ -22,7 +23,11 @@ HEADERS  += \
     mainWindow.h \
     statisticsTab.h \
     linkedListTest.h \
-    hashtableTest.h
+    hashtableTest.h \
+    hashFunction.h \
+    hashSimple.h \
+    hashRS.h \
+    hashLY.h
 
 FORMS    += \
     mainWindow.ui

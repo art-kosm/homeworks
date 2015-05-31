@@ -1,8 +1,7 @@
 #pragma once
 
 #include "linkedList.h"
-
-typedef unsigned int (*hashFunction)(const QString &value, int modulo);
+#include "hashFunction.h"
 
 class Hashtable
 {
@@ -91,29 +90,16 @@ public:
      *
      * Sets new hash function and rebuilds the table
      *
-     * @param hashFunction function
+     * @param hashFunction
      */
 
-    void setHashFunction(hashFunction function);
+    void setHashFunction(HashFunction *hashFunction);
 
 private:
     int size;
     int elementsNumber;
     LinkedList **list;
-    hashFunction hash;
-
-    /**
-     * @brief The default hash function
-     *
-     * Multiplies current value by base 8191, adds the next symbol value
-     * and takes modulo.
-     *
-     * @param value
-     * @param modulo
-     * @return unsigned int hash
-     */
-
-    static unsigned int defaultHash(const QString &value, int modulo);
+    HashFunction *hashFunction;
 
     /**
      * @brief Hashtable rebuilder

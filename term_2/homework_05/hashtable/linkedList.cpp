@@ -45,7 +45,7 @@ bool LinkedList::add(const QString &value)
 {
     ListElement *element = find(value);
 
-    if (element->next != nullptr) //found => true (current->next->value == value)
+    if (element->next != nullptr) //found => true (element->next->value == value)
         return true;
     else //not found => false (but the next time it will be found ^_^)
     {

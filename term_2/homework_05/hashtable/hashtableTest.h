@@ -137,62 +137,6 @@ private slots:
         QVERIFY(hashtable->contains("65536 orangs"));
     }
 
-    void testNewHashElementsNumber()
-    {
-        hashtable->setHashFunction(constantHash);
-        hashtable->add("lemur");
-        hashtable->add("lory");
-        hashtable->add("toque");
-        hashtable->add("lory");
-
-        QVERIFY(hashtable->getElementsNumber() == 3);
-    }
-
-    void testNewHashLoadFactor()
-    {
-        hashtable->setHashFunction(constantHash);
-        hashtable->add("marmoset");
-        hashtable->add("carp");
-        hashtable->add("shrimp");
-
-        QVERIFY(hashtable->loadFactor() != 0);
-    }
-
-    void testNewHashContains()
-    {
-        hashtable->setHashFunction(constantHash);
-        hashtable->add("octopus");
-        hashtable->add("squid");
-        hashtable->add("duck");
-
-        QVERIFY(hashtable->contains("squid"));
-    }
-
-    void testNonEmptyConflicts()
-    {
-        hashtable->setHashFunction(constantHash);
-        hashtable->add("pig");
-        hashtable->add("goldfish");
-        hashtable->add("platypus");
-
-        QVERIFY(hashtable->conflicts() == 1);
-    }
-
-    void testNonEmptyMaxListLength()
-    {
-        hashtable->setHashFunction(constantHash);
-        hashtable->add("angelfish");
-        hashtable->add("clownfish");
-        hashtable->add("crab");
-
-        QVERIFY(hashtable->maxListLength() == 3);
-    }
-
 private:
     Hashtable *hashtable;
-
-    static unsigned int constantHash(const QString &value, int modulo)
-    {
-        return 42 % modulo;
-    }
 };

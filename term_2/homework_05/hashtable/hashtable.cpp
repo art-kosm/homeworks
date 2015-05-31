@@ -1,4 +1,5 @@
 #include "hashtable.h"
+#include "hashSimple.h"
 
 Hashtable::Hashtable()
 {
@@ -9,7 +10,7 @@ Hashtable::Hashtable()
     for (int i = 0; i < size; i++)
         list[i] = nullptr;
 
-    hash = defaultHash;
+    hashFunction = new HashSimple();
 }
 
 Hashtable::~Hashtable()
@@ -19,11 +20,12 @@ Hashtable::~Hashtable()
             delete list[i];
 
     delete [] list;
+    delete hashFunction;
 }
 
 void Hashtable::add(const QString &value)
 {
-    int valueHash = hash(value, size);
+    int valueHash = hashFunction->calculateHash(value, size);
 
     if (list[valueHash] == nullptr)
         list[valueHash] = new LinkedList();
@@ -38,7 +40,7 @@ void Hashtable::add(const QString &value)
 
 void Hashtable::remove(const QString &value)
 {
-    int valueHash = hash(value, size);
+    int valueHash = hashFunction->calculateHash(value, size);
 
     if (list[valueHash] != nullptr)
     {
@@ -50,7 +52,7 @@ void Hashtable::remove(const QString &value)
 
 bool Hashtable::contains(const QString &value) const
 {
-    int valueHash = hash(value, size);
+    int valueHash = hashFunction->calculateHash(value, size);
 
     return  list[valueHash] != nullptr &&
             list[valueHash]->contains(value);
@@ -92,26 +94,12 @@ int Hashtable::maxListLength() const
     return maxLength;
 }
 
-void Hashtable::setHashFunction(hashFunction function)
+void Hashtable::setHashFunction(HashFunction *hashFunction)
 {
-    hash = function;
+    delete this->hashFunction;
+    this->hashFunction = hashFunction;
+
     rebuild(size);
-}
-
-unsigned int Hashtable::defaultHash(const QString &value, int modulo)
-{
-    const unsigned int base = 8191 % modulo;
-
-    int last = value.length() - 1;
-    unsigned int sum = value.at(last).toLatin1() % modulo;
-
-    while (last > 0)
-    {
-        last--;
-        sum = (base * sum + value.at(last).toLatin1()) % modulo;
-    }
-
-    return sum;
 }
 
 void Hashtable::rebuild(int newSize)
@@ -129,7 +117,7 @@ void Hashtable::rebuild(int newSize)
             for (int j = 0; j < listLength; j++)
             {
                 QString value = list[i]->at(j);
-                int valueHash = hash(value, newSize);
+                int valueHash = hashFunction->calculateHash(value, newSize);
 
                 if (newList[valueHash] == nullptr)
                     newList[valueHash] = new LinkedList();
