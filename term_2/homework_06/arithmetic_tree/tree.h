@@ -6,7 +6,7 @@
 class Tree : public Operand
 {
 public:
-    Tree();
+    Tree(Operator *operation = nullptr, Operand *leftOperand = nullptr, Operand *rightOperand = nullptr);
     ~Tree();
     void setOperation(Operator *operation);
     void setLeftOperand(Operand *operand);

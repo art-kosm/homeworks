@@ -20,7 +20,7 @@ Tree *TreeBuilder::buildTree(char *path)
 
 Tree *TreeBuilder::readTree(std::ifstream &in, char operation)
 {
-    Tree *tree = new Tree;
+    Tree *tree = new Tree();
 
     setOperator(tree, operation);
     setOperands(tree, in);
@@ -90,4 +90,3 @@ int TreeBuilder::number(char c) const
 {
     return c - '0';
 }
-

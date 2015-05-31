@@ -1,11 +1,11 @@
 #include <iostream>
 #include "tree.h"
 
-Tree::Tree()
+Tree::Tree(Operator *operation, Operand *leftOperand, Operand *rightOperand)
 {
-    operation = nullptr;
-    leftOperand = nullptr;
-    rightOperand = nullptr;
+    this->operation = operation;
+    this->leftOperand = leftOperand;
+    this->rightOperand = rightOperand;
 }
 
 Tree::~Tree()
@@ -32,26 +32,10 @@ void Tree::setRightOperand(Operand *operand)
 
 int Tree::calculate() const
 {
-    if (operation != nullptr &&
-        leftOperand != nullptr &&
-        rightOperand != nullptr)
-        switch (operation->get())
-        {
-            case '+':
-                return leftOperand->calculate() + rightOperand->calculate();
+    return operation->calculate(leftOperand->calculate(), rightOperand->calculate());
 
-            case '-':
-                return leftOperand->calculate() - rightOperand->calculate();
-
-            case '*':
-                return leftOperand->calculate() * rightOperand->calculate();
-
-            case '/':
-                return leftOperand->calculate() / rightOperand->calculate();
-
-            default:
-                break;
-        }
+    if (operation != nullptr && leftOperand != nullptr && rightOperand != nullptr)
+        return operation->calculate(leftOperand->calculate(), rightOperand->calculate());
 
     return 0;
 }

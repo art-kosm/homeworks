@@ -21,6 +21,8 @@ public:
 
     void print() const;
 
+    virtual int calculate(int, int) const = 0;
+
 protected:
 
     /**

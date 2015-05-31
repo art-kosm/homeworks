@@ -11,4 +11,5 @@ public:
 
     char get() const;
     void print() const;
+    int calculate(int, int) const;
 };

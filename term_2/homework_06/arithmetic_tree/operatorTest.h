@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdlib>
+#include <ctime>
 #include <QObject>
 #include <QtTest/QtTest>
 #include "operatorAdd.h"
@@ -20,32 +22,68 @@ private slots:
         delete operation;
     }
 
-    void testOperatorAdd()
+    void testOperatorAddGet()
     {
         operation = new OperatorAdd;
 
         QVERIFY(operation->get() == '+');
     }
 
-    void testOperatorSub()
+    void testOperatorAddCalculate()
+    {
+        operation = new OperatorAdd;
+        int left = rand();
+        int right = rand();
+
+        QVERIFY(operation->calculate(left, right) == left + right);
+    }
+
+    void testOperatorSubGet()
     {
         operation = new OperatorSub;
 
         QVERIFY(operation->get() == '-');
     }
 
-    void testOperatorMul()
+    void testOperatorSubCalculate()
+    {
+        operation = new OperatorSub;
+        int left = rand();
+        int right = rand();
+
+        QVERIFY(operation->calculate(left, right) == left - right);
+    }
+
+    void testOperatorMulGet()
     {
         operation = new OperatorMul;
 
         QVERIFY(operation->get() == '*');
     }
 
-    void testOperatorDiv()
+    void testOperatorMulCalculate()
+    {
+        operation = new OperatorMul;
+        int left = rand();
+        int right = rand();
+
+        QVERIFY(operation->calculate(left, right) == left * right);
+    }
+
+    void testOperatorDivGet()
     {
         operation = new OperatorDiv;
 
         QVERIFY(operation->get() == '/');
+    }
+
+    void testOperatorDivCalculate()
+    {
+        operation = new OperatorDiv;
+        int left = rand();
+        int right = rand() + 1;
+
+        QVERIFY(operation->calculate(left, right) == left / right);
     }
 
 private:
