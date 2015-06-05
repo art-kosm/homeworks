@@ -1,6 +1,6 @@
 #include "hashLY.h"
 
-unsigned int HashLY::calculateHash(const QString &value, int modulo)
+unsigned int HashLY::calculateHash(const QString &value, int modulo) const
 {
     const unsigned int base = 1664525 % modulo; //not prime . . .
     const unsigned int summand = 1013904223 % modulo; //prime

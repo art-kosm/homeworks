@@ -6,5 +6,5 @@ class HashFunction
 {
 public:
     virtual ~HashFunction() {}
-    virtual unsigned int calculateHash(const QString &value, int modulo) = 0;
+    virtual unsigned int calculateHash(const QString &value, int modulo) const = 0;
 };

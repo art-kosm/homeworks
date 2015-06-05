@@ -1,6 +1,6 @@
 #include "hashSimple.h"
 
-unsigned int HashSimple::calculateHash(const QString &value, int modulo)
+unsigned int HashSimple::calculateHash(const QString &value, int modulo) const
 {
     const unsigned int base = 8191 % modulo; //prime
 

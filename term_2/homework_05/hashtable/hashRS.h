@@ -18,5 +18,5 @@ public:
      * @return unsigned int hash
      */
 
-    unsigned int calculateHash(const QString &value, int modulo);
+    unsigned int calculateHash(const QString &value, int modulo) const;
 };
