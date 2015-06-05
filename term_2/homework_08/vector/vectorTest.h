@@ -345,6 +345,43 @@ private slots:
         delete vector2;
     }
 
+    void testNotChangingVector()
+    {
+        dimensions = rand() % 99 + 2;
+        int array[dimensions];
+        for (int i = 0; i < dimensions; i++)
+            array[i] = rand();
+
+        Vector<int> *vector = new Vector<int>(dimensions, array);
+        Vector<int> *vectorSample = new Vector<int>(*vector);
+
+        Vector<int> newVector = *vector + *vector;
+
+        QVERIFY(*vector == *vectorSample);
+    }
+
+    void testNotChangingMultilpeVectors()
+    {
+        dimensions = rand() % 99 + 2;
+
+        int array1[dimensions];
+        for (int i = 0; i < dimensions; i++)
+            array1[i] = rand();
+        int array2[dimensions];
+        for (int i = 0; i < dimensions; i++)
+            array2[i] = rand();
+
+        Vector<int> *vector1 = new Vector<int>(dimensions, array1);
+        Vector<int> *vector1Sample = new Vector<int>(*vector1);
+        Vector<int> *vector2 = new Vector<int>(dimensions, array2);
+        Vector<int> *vector2Sample = new Vector<int>(*vector2);
+
+        Vector<int> newVector = *vector1 + *vector2;
+
+        QVERIFY(*vector1 == *vector1Sample &&
+                *vector2 == *vector2Sample);
+    }
+
 private:
     int dimensions;
 };

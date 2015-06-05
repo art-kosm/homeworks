@@ -34,7 +34,8 @@ public:
     Vector<T>& operator-=(const Vector<T> &);
     template <typename U> friend Vector<U> operator-(Vector<U>, const Vector<U> &);
 
-    template <typename U> friend  U operator*(const Vector<U> &, const Vector<U> &);
+    template <typename U> friend U operator*(const Vector<U> &, const Vector<U> &);
+    template <typename U> friend bool operator==(const Vector<U> &, const Vector<U> &);
 
     bool isNull() const;
 
@@ -98,7 +99,9 @@ Vector<T>& Vector<T>::operator+=(const Vector<T> &vector)
 template <typename T>
 Vector<T> operator+(Vector<T> left, const Vector<T> &right)
 {
-    return left += right;
+    Vector<T> result(left);
+
+    return result += right;
 }
 
 template <typename T>
@@ -114,7 +117,9 @@ Vector<T>& Vector<T>::operator-=(const Vector<T> &vector)
 template <typename T>
 Vector<T> operator-(Vector<T> left, const Vector<T> &right)
 {
-    return left -= right;
+    Vector<T> result(left);
+
+    return result -= right;
 }
 
 template <typename T>
@@ -127,6 +132,17 @@ T operator*(const Vector<T> &left, const Vector<T> &right)
             result += left.values[i] * right.values[i];
 
     return result;
+}
+
+template <typename T>
+bool operator==(const Vector<T> &left, const Vector<T> &right)
+{
+    if (left.dimensions == right.dimensions)
+        for (int i = 0; i < left.dimensions; i++)
+            if (left.values[i] != right.values[i])
+                return false;
+
+    return true;
 }
 
 template <typename T>
