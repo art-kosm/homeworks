@@ -3,39 +3,24 @@
 #include <cstdlib>
 #include <ctime>
 #include <QtTest/QtTest>
-#include "bag.h"
+#include "tree.h"
 
-class BagTest : public QObject
+class TreeTest : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit BagTest(QObject *parent = 0) : QObject(parent) {}
+    explicit TreeTest(QObject *parent = 0) : QObject(parent) {}
 
 private slots:
     void init()
     {
-        bag = new Bag();
+        tree = new Tree();
     }
 
     void cleanup()
     {
-        delete bag;
-    }
-
-    void testManyElementsContains1()
-    {
-        srand(time(0));
-        for (int i = 0; i < 100; i++)
-            bag->add(rand());
-
-        int value = rand();
-        bag->add(value);
-
-        for (int i = 0; i < 100; i++)
-            bag->add(rand());
-
-        QVERIFY(bag->contains(value));
+        delete tree;
     }
 
     void testEmpty()
@@ -43,126 +28,126 @@ private slots:
         srand(time(0));
         int value = rand();
 
-        QVERIFY(!bag->contains(value));
+        QVERIFY(!tree->contains(value));
     }
 
     void testOneElementContains()
     {
         int value = rand();
-        bag->add(value);
+        tree->add(value);
 
-        QVERIFY(bag->contains(value));
+        QVERIFY(tree->contains(value));
     }
 
     void testOneElementDoesNotContain()
     {
         int value = rand();
-        bag->add(value);
+        tree->add(value);
 
-        QVERIFY(!bag->contains(value - 1));
+        QVERIFY(!tree->contains(value - 1));
     }
 
     void testOneElementRemove()
     {
         int value = rand();
-        bag->add(value);
-        bag->remove(value);
+        tree->add(value);
+        tree->remove(value);
 
-        QVERIFY(!bag->contains(value));
+        QVERIFY(!tree->contains(value));
     }
 
     void testOneElementTwiceContains()
     {
         int value = rand();
-        bag->add(value);
-        bag->add(value);
+        tree->add(value);
+        tree->add(value);
 
-        QVERIFY(bag->contains(value));
+        QVERIFY(tree->contains(value));
     }
 
     void testOneElementTwiceRemoveContains()
     {
         int value = rand();
-        bag->add(value);
-        bag->add(value);
-        bag->remove(value);
+        tree->add(value);
+        tree->add(value);
+        tree->remove(value);
 
-        QVERIFY(bag->contains(value));
+        QVERIFY(tree->contains(value));
     }
 
     void testOneElementTwiceRemoveDoesNotContain()
     {
         int value = rand();
-        bag->add(value);
-        bag->add(value);
-        bag->remove(value);
-        bag->remove(value);
+        tree->add(value);
+        tree->add(value);
+        tree->remove(value);
+        tree->remove(value);
 
-        QVERIFY(!bag->contains(value));
+        QVERIFY(!tree->contains(value));
     }
 
     void testManyElementsContains()
     {
         for (int i = 0; i < 100; i++)
-            bag->add(rand());
+            tree->add(rand());
 
         int value = rand();
-        bag->add(value);
+        tree->add(value);
 
         for (int i = 0; i < 100; i++)
-            bag->add(rand());
+            tree->add(rand());
 
-        QVERIFY(bag->contains(value));
+        QVERIFY(tree->contains(value));
     }
 
     void testManyElementsRemove()
     {
         int value = rand();
-        bag->add(value);
+        tree->add(value);
 
         for (int i = 0; i < 100; i++)
-            bag->add(value - i);
+            tree->add(value - i);
 
-        bag->remove(value - 50);
+        tree->remove(value - 50);
 
-        QVERIFY(!bag->contains(value - 50));
+        QVERIFY(!tree->contains(value - 50));
     }
 
     void testManyElementsManyTimesContains()
     {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
-                bag->add(i);
+                tree->add(i);
 
-        QVERIFY(bag->contains(5));
+        QVERIFY(tree->contains(5));
     }
 
     void testManyElementsManyTimesRemoveContains()
     {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
-                bag->add(i);
+                tree->add(i);
 
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 5; j++)
-                bag->remove(i);
+                tree->remove(i);
 
-        QVERIFY(bag->contains(5));
+        QVERIFY(tree->contains(5));
     }
 
     void testManyElementsManyTimesRemoveDoesNotContain()
     {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
-                bag->add(i);
+                tree->add(i);
 
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
-                bag->remove(i);
+                tree->remove(i);
 
-        QVERIFY(!bag->contains(5));
+        QVERIFY(!tree->contains(5));
     }
 
 private:
-    Bag *bag;
+    Tree *tree;
 };

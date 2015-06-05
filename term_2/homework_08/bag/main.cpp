@@ -1,12 +1,10 @@
 #include <iostream>
-#include "bagTest.h"
-
-using namespace std;
+#include "treeTest.h"
 
 int main()
 {
-    BagTest testBag;
-    QTest::qExec(&testBag);
+    TreeTest testTree;
+    QTest::qExec(&testTree);
     std::cout << std::endl;
 
     return 0;
