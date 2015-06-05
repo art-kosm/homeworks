@@ -11,8 +11,7 @@ MainWindow::MainWindow(int size, QWidget *parent) :
     setWindowTitle("Tic-tac-toe (single-player edition)");
     setMinimumSize(250, 297);
 
-    turnX = true;
-    firstTurn = false; //after previous game
+    game = new TicTacToeGame(size);
 
     initializeButtons(size);
 }
@@ -60,127 +59,41 @@ void MainWindow::initializeButtons(int size)
     }
 
     ui->centralWidget->setLayout(layout);
+
     connect(mapper, SIGNAL(mapped(int)), this, SIGNAL(clicked(int)));
-    connect(this, SIGNAL(clicked(int)), this, SLOT(nextTurn(int)));
+    connect(this, SIGNAL(clicked(int)), game, SLOT(nextTurn(int)));
+    connect(game, SIGNAL(turnMade(int, FieldValue)), this, SLOT(setTurn(int, FieldValue)));
+
+    connect(game, SIGNAL(gameFinished(GameStatus)), this, SLOT(showResults(GameStatus)));
+    connect(game, SIGNAL(newGame()), this, SLOT(resetWindow()));
 }
 
-void MainWindow::nextTurn(int buttonNumber)
+void MainWindow::resetWindow()
 {
-    if (firstTurn)
-    {
-        setWindowTitle("Tic-tac-toe (single-player edition)");
-        for (int i = 0; i < buttonsNumber; i++)
-            buttons[i]->setText("");
-        firstTurn = false;
-    }
-
-    if (buttons[buttonNumber]->text().isEmpty())
-        buttons[buttonNumber]->setText(turnX ? "X" : "O");
-
-    turnX = !turnX;
-
-    checkForWinner();
+    setWindowTitle("Tic-tac-toe (single-player edition)");
+    for (int i = 0; i < buttonsNumber; i++)
+        buttons[i]->setText("");
 }
 
-void MainWindow::checkForWinner()
+void MainWindow::showResults(GameStatus winner)
 {
-    QString winner = "";
-    if (    horizontalWinner(winner) || verticalWinner(winner) ||
-            majorDiagonalWinner(winner) || minorDiagonalWinner(winner) ||
-            draw(winner))
+    switch (winner)
     {
-        showResults(winner);
-    }
-}
+        case crossesWon:
+            setWindowTitle("X has won!");
+            break;
 
-bool MainWindow::horizontalWinner(QString &winner)
-{
-    bool sequence = false;
+        case noughtsWon:
+            setWindowTitle("O has won!");
+            break;
 
-    for (int i = 0; i < buttonsNumber; i += sideLength)
-    {
-        for (int j = 0; j < sideLength - 1; j++)
-        {
-            sequence = !buttons[i + j]->text().isEmpty() &&
-                       buttons[i + j]->text() == buttons[i + j + 1]->text();
-            if (!sequence)
-                break;
-            winner = buttons[i + j]->text();
-        }
-        if (sequence)
+        default:
+            setWindowTitle("Draw");
             break;
     }
-
-    return sequence;
 }
 
-bool MainWindow::verticalWinner(QString &winner)
+void MainWindow::setTurn(int buttonNumber, FieldValue value)
 {
-    bool sequence = false;
-    for (int i = 0; i < sideLength; i++)
-    {
-        for (int j = 0; j < buttonsNumber - sideLength; j += sideLength)
-        {
-            sequence = !buttons[i + j]->text().isEmpty() &&
-                       buttons[i + j]->text() == buttons[i + j + sideLength]->text();
-            if (!sequence)
-                break;
-            winner = buttons[i + j]->text();
-        }
-        if (sequence)
-            break;
-    }
-
-    return sequence;
-}
-
-bool MainWindow::majorDiagonalWinner(QString &winner)
-{
-    bool sequence = false;
-    for (int i = 0; i < buttonsNumber - 1; i += sideLength + 1)
-    {
-        sequence = !buttons[i]->text().isEmpty() &&
-                   buttons[i]->text() == buttons[i + sideLength + 1]->text();
-        if (!sequence)
-            break;
-        winner = buttons[i]->text();
-    }
-
-    return sequence;
-}
-
-bool MainWindow::minorDiagonalWinner(QString &winner)
-{
-    bool sequence = false;
-    for (int i = sideLength - 1; i < buttonsNumber - sideLength; i += sideLength - 1)
-    {
-        sequence = !buttons[i]->text().isEmpty() &&
-                   buttons[i]->text() == buttons[i + sideLength - 1]->text();
-        if (!sequence)
-            break;
-        winner = buttons[i]->text();
-    }
-
-    return sequence;
-}
-
-bool MainWindow::draw(QString &winner)
-{
-    bool noEmptyPlaces = true;
-    for (int i = 0; i < buttonsNumber && noEmptyPlaces; i++)
-        if (buttons[i]->text() == "")
-            noEmptyPlaces = false;
-
-    if (noEmptyPlaces)
-        winner = "Nobody";
-
-    return noEmptyPlaces;
-}
-
-void MainWindow::showResults(const QString &winner)
-{
-    setWindowTitle(winner + " has won!");
-
-    turnX = true;
-    firstTurn = true;
+    buttons[buttonNumber]->setText(value == cross ? "X" : "O");
 }

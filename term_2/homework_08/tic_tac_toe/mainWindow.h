@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include "ticTacToeGame.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,25 +20,16 @@ signals:
     void clicked(int);
 
 private slots:
-    void nextTurn(int);
+    void setTurn(int, FieldValue);
+    void showResults(GameStatus);
+    void resetWindow();
 
 private:
     Ui::MainWindow *ui;
     int sideLength;
     int buttonsNumber;
     QPushButton **buttons;
-
-    bool turnX;
-    bool firstTurn;
+    TicTacToeGame *game;
 
     void initializeButtons(int);
-
-    void checkForWinner();
-    bool horizontalWinner(QString &);
-    bool verticalWinner(QString &);
-    bool majorDiagonalWinner(QString &);
-    bool minorDiagonalWinner(QString &);
-    bool draw(QString &);
-
-    void showResults(const QString &);
 };
