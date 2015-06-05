@@ -1,7 +1,5 @@
 #pragma once
 
-#include "linkedList.h"
-
 template <typename T>
 class SharedPointer
 {
@@ -17,10 +15,10 @@ public:
      * @param newObject
      */
 
-    SharedPointer(T *newObject) : object(newObject)
-    {
-        objectsList->add(object);
-    }
+    SharedPointer(T *newObject = nullptr) :
+        object(newObject),
+        counter(new int(1))
+    {}
 
     /**
      * @brief SharedPointer copy constructor
@@ -30,23 +28,20 @@ public:
      * @param pointer
      */
 
-    SharedPointer(const SharedPointer &pointer) : object(&*pointer)
+    SharedPointer(const SharedPointer &pointer)
     {
-        objectsList->add(object);
+        setObjectPointer(pointer);
     }
 
     ~SharedPointer()
     {
-        objectsList->remove(object);
-
-        if (objectsList->length() == 0)
-            delete objectsList;
+        decreaseCounter();
     }
 
     SharedPointer& operator=(const SharedPointer &pointer)
     {
-        delete this;
-        this = new SharedPointer(&*pointer);
+        decreaseCounter();
+        setObjectPointer(pointer);
 
         return *this;
     }
@@ -69,13 +64,29 @@ public:
 
     int count() const
     {
-        return objectsList->count(object);
+        return *counter;
+    }
+
+    void setObjectPointer(const SharedPointer &pointer)
+    {
+        object = pointer.object;
+        counter = pointer.counter;
+
+        (*counter)++;
+    }
+
+    void decreaseCounter()
+    {
+        (*counter)--;
+
+        if (*counter == 0)
+        {
+            delete object;
+            delete counter;
+        }
     }
 
 private:
     T *object;
-    static LinkedList<T> *objectsList;
+    int *counter;
 };
-
-template <typename T>
-LinkedList<T> *SharedPointer<T>::objectsList = new LinkedList<T>();

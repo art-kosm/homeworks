@@ -4,12 +4,11 @@ QT       -= gui
 CONFIG += console
 CONFIG -= app_bundle
 
-SOURCES += main.cpp \
-    numberClass.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     sharedPointer.h \
-    linkedList.h \
-    numberClass.h
+    numberClass.h \
+    smartPointerTest.h
 
 QMAKE_CXXFLAGS += -std=c++11
