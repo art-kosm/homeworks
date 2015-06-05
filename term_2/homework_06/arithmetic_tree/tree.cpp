@@ -32,8 +32,6 @@ void Tree::setRightOperand(Operand *operand)
 
 int Tree::calculate() const
 {
-    return operation->calculate(leftOperand->calculate(), rightOperand->calculate());
-
     if (operation != nullptr && leftOperand != nullptr && rightOperand != nullptr)
         return operation->calculate(leftOperand->calculate(), rightOperand->calculate());
 
