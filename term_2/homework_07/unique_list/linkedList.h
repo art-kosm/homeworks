@@ -31,7 +31,7 @@ public:
      * Removes each element with the specified value
      *
      * @param value
-     * @return "true" if the value has already existed, "false" otherwise
+     * @return "true" if the value existed, "false" otherwise
      */
 
     bool remove(const QString&);
