@@ -1,11 +1,13 @@
 #pragma once
 
 #include <QDialog>
+#include "../message_exchanger/messageExchanger.h"
 
 class QLabel;
 class QTcpServer;
 class QNetworkSession;
 class QLineEdit;
+class QPlainTextEdit;
 class QTcpSocket;
 
 class Server : public QDialog
@@ -14,6 +16,7 @@ class Server : public QDialog
 
 public:
     Server(QWidget *parent = 0);
+    ~Server();
 
 private slots:
     void sessionOpened();
@@ -22,12 +25,15 @@ private slots:
     void getMessage();
 
 private:
-    QLineEdit *serverMessage;
-    QLineEdit *clientMessage;
-    QLabel *statusLabel;
-
     QTcpServer *tcpServer;
     QNetworkSession *networkSession;
-
     QTcpSocket *tcpSocket;
+    MessageExchanger *exchanger;
+
+    QLabel *statusLabel;
+    QPlainTextEdit *chat;
+    QLineEdit *userMessage;
+
+    void setWidgets();
+    void openSession();
 };

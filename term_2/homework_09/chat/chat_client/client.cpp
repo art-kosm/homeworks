@@ -1,10 +1,31 @@
 #include <QtWidgets>
 #include <QtNetwork>
-
 #include "client.h"
 
-Client::Client(QWidget *parent)
-:   QDialog(parent), networkSession(0)
+Client::Client(QWidget *parent) :
+    QDialog(parent),
+    networkSession(0),
+    tcpSocket(new QTcpSocket(this)),
+    exchanger(new MessageExchanger())
+{
+    setWidgets();
+
+    setWindowTitle("Chat client");
+    portLineEdit->setFocus();
+
+    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(getMessage()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(displayError(QAbstractSocket::SocketError)));
+
+    openSession();
+}
+
+Client::~Client()
+{
+    delete exchanger;
+}
+
+void Client::setWidgets()
 {
     QLabel *hostLabel = new QLabel("Server name:");
     QLabel *portLabel = new QLabel("Server port:");
@@ -48,11 +69,8 @@ Client::Client(QWidget *parent)
     statusLabel = new QLabel("This application requires that you run the "
                              "chat server as well.");
 
-    QLabel *clientLabel = new QLabel("Your message:");
-    QLabel *serverLabel = new QLabel("Server message:");
-    clientMessage = new QLineEdit;
-    serverMessage = new QLineEdit;
-    serverMessage->setReadOnly(true);
+    QLabel *userLabel = new QLabel("Your message:");
+    userMessage = new QLineEdit;
 
     QPushButton *connectButton = new QPushButton("Connect");
     QPushButton *sendButton = new QPushButton("Send");
@@ -63,32 +81,28 @@ Client::Client(QWidget *parent)
     buttonBox->addButton(sendButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
 
-    tcpSocket = new QTcpSocket(this);
-
     connect(connectButton, SIGNAL(clicked()), this, SLOT(connectToHost()));
     connect(sendButton, SIGNAL(clicked()), this, SLOT(sendMessage()));
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
 
-    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(getMessage()));
-    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(displayError(QAbstractSocket::SocketError)));
+    chat = new QPlainTextEdit;
+    chat->setReadOnly(true);
 
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(hostLabel, 0, 0);
     mainLayout->addWidget(hostCombo, 0, 1);
     mainLayout->addWidget(portLabel, 1, 0);
     mainLayout->addWidget(portLineEdit, 1, 1);
-    mainLayout->addWidget(clientLabel, 2, 0);
-    mainLayout->addWidget(clientMessage, 2, 1);
-    mainLayout->addWidget(serverLabel, 3, 0);
-    mainLayout->addWidget(serverMessage, 3, 1);
-    mainLayout->addWidget(statusLabel, 4, 0, 1, 2);
+    mainLayout->addWidget(statusLabel, 2, 0, 1, 2);
+    mainLayout->addWidget(chat, 3, 0, 1, 2);
+    mainLayout->addWidget(userLabel, 4, 0);
+    mainLayout->addWidget(userMessage, 4, 1);
     mainLayout->addWidget(buttonBox, 5, 0, 1, 2);
     setLayout(mainLayout);
+}
 
-    setWindowTitle("Chat client");
-    portLineEdit->setFocus();
-
+void Client::openSession()
+{
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired)
     {
@@ -135,7 +149,6 @@ void Client::sessionOpened()
 
 void Client::connectToHost()
 {
-    blockSize = 0;
     tcpSocket->abort();
     tcpSocket->connectToHost(hostCombo->currentText(),
                              portLineEdit->text().toInt());
@@ -143,36 +156,13 @@ void Client::connectToHost()
 
 void Client::sendMessage()
 {
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
-    out << (quint16) 0;
-    out << clientMessage->text();
-    out.device()->seek(0);
-    out << (quint16) (block.size() - sizeof(quint16));
-
-    tcpSocket->write(block);
+    exchanger->sendMessage(tcpSocket, userMessage->text());
+    chat->appendPlainText("client : " + userMessage->text());
 }
 
 void Client::getMessage()
 {
-    QDataStream in(tcpSocket);
-    in.setVersion(QDataStream::Qt_4_0);
-
-    if (blockSize == 0)
-    {
-        if (tcpSocket->bytesAvailable() < (int)sizeof(quint16))
-            return;
-
-        in >> blockSize;
-    }
-
-    if (tcpSocket->bytesAvailable() < blockSize)
-        return;
-
-    in >> currentMessage;
-    serverMessage->setText(currentMessage);
-
+    chat->appendPlainText("server : " + exchanger->getMessage(tcpSocket));
     connectToHost();
 }
 

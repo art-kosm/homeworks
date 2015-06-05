@@ -2,13 +2,14 @@
 
 #include <QDialog>
 #include <QTcpSocket>
+#include "../message_exchanger/messageExchanger.h"
 
 class QComboBox;
 class QDialogButtonBox;
 class QLabel;
 class QLineEdit;
+class QPlainTextEdit;
 class QPushButton;
-class QTcpSocket;
 class QNetworkSession;
 
 class Client : public QDialog
@@ -17,6 +18,7 @@ class Client : public QDialog
 
 public:
     Client(QWidget *parent = 0);
+    ~Client();
 
 private slots:
     void sessionOpened();
@@ -26,16 +28,16 @@ private slots:
     void displayError(QAbstractSocket::SocketError socketError);
 
 private:
+    QNetworkSession *networkSession;
+    QTcpSocket *tcpSocket;
+    MessageExchanger *exchanger;
+
     QComboBox *hostCombo;
     QLineEdit *portLineEdit;
     QLabel *statusLabel;
+    QPlainTextEdit *chat;
+    QLineEdit *userMessage;
 
-    QTcpSocket *tcpSocket;
-    QString currentMessage;
-    quint16 blockSize;
-
-    QNetworkSession *networkSession;
-
-    QLineEdit *serverMessage;
-    QLineEdit *clientMessage;
+    void setWidgets();
+    void openSession();
 };

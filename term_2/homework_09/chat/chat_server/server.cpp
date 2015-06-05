@@ -1,22 +1,58 @@
-#include <cstdlib>
 #include <QtWidgets>
 #include <QtNetwork>
+
 #include "server.h"
 
-Server::Server(QWidget *parent)
-:   QDialog(parent), tcpServer(0), networkSession(0)
+Server::Server(QWidget *parent) :
+    QDialog(parent),
+    tcpServer(0),
+    networkSession(0),
+    exchanger(new MessageExchanger())
+{
+    setWidgets();
+    setWindowTitle("Chat server");
+
+    openSession();
+
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
+}
+
+Server::~Server()
+{
+    delete exchanger;
+}
+
+void Server::setWidgets()
 {
     statusLabel = new QLabel;
 
-    QLabel *serverLabel = new QLabel("Your message:");
-    QLabel *clientLabel = new QLabel("Client message:");
-    serverMessage = new QLineEdit;
-    clientMessage = new QLineEdit;
-    clientMessage->setReadOnly(true);
+    QLabel *userLabel = new QLabel("Your message:");
+    userMessage = new QLineEdit;
 
     QPushButton *sendButton = new QPushButton("Send");
     QPushButton *quitButton = new QPushButton("Quit");
 
+    QDialogButtonBox *buttonBox = new QDialogButtonBox;
+    buttonBox->addButton(sendButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
+
+    connect(sendButton, SIGNAL(clicked()), this, SLOT(sendMessage()));
+    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
+
+    chat = new QPlainTextEdit();
+    chat->setReadOnly(true);
+
+    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout->addWidget(statusLabel, 0, 0);
+    mainLayout->addWidget(chat, 1, 0, 1, 2);
+    mainLayout->addWidget(userLabel, 2, 0);
+    mainLayout->addWidget(userMessage, 2, 1);
+    mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
+    setLayout(mainLayout);
+}
+
+void Server::openSession()
+{
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired)
     {
@@ -43,23 +79,6 @@ Server::Server(QWidget *parent)
 
     else
         sessionOpened();
-
-    connect(sendButton, SIGNAL(clicked()), this, SLOT(sendMessage()));
-    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
-
-    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
-
-    QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->addWidget(statusLabel, 0, 0);
-    mainLayout->addWidget(serverLabel, 1, 0);
-    mainLayout->addWidget(serverMessage, 1, 1);
-    mainLayout->addWidget(clientLabel, 2, 0);
-    mainLayout->addWidget(clientMessage, 2, 1);
-    mainLayout->addWidget(sendButton, 3, 0);
-    mainLayout->addWidget(quitButton, 3, 1);
-    setLayout(mainLayout);
-
-    setWindowTitle("Chat server");
 }
 
 void Server::sessionOpened()
@@ -119,32 +138,11 @@ void Server::acceptConnection()
 
 void Server::sendMessage()
 {
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
-    out << (quint16) 0;
-    out << serverMessage->text();
-    out.device()->seek(0);
-    out << (quint16) (block.size() - sizeof(quint16));
-
-    tcpSocket->write(block);
+    exchanger->sendMessage(tcpSocket, userMessage->text());
+    chat->appendPlainText("server : " + userMessage->text());
 }
 
 void Server::getMessage()
 {
-    QDataStream in(tcpSocket);
-    in.setVersion(QDataStream::Qt_4_0);
-
-    if (tcpSocket->bytesAvailable() < (int)sizeof(quint16))
-        return;
-
-    quint16 blockSize = 0;
-    in >> blockSize;
-
-    if (tcpSocket->bytesAvailable() < blockSize)
-        return;
-
-    QString currentMessage = "";
-    in >> currentMessage;
-    clientMessage->setText(currentMessage);
+    chat->appendPlainText("client : " + exchanger->getMessage(tcpSocket));
 }
